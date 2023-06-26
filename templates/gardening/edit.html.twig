@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Gardening{% endblock %}
+
+{% block body %}
+    <h1>Edit Gardening</h1>
+
+    {{ include('gardening/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_gardening_index') }}">back to list</a>
+
+    {{ include('gardening/_delete_form.html.twig') }}
+{% endblock %}
