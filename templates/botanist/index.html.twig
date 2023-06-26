@@ -3,7 +3,7 @@
 {% block title %}Botanist index{% endblock %}
 
 {% block body %}
-    <h1>Botanist index</h1>
+    <h1 class="text-9xl">Botanist index</h1>
 
     <table class="table">
         <thead>
@@ -43,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_botanist_new') }}">Create new</a>
+    <a href="{{ path('app_botanist_new') }}" class="bg-amber-600 font-bold mt-5 p-2 rounded">Create new</a>
 {% endblock %}
