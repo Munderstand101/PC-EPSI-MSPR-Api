@@ -77,6 +77,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Plante::class)]
     private Collection $plantes;
 
+    #[ORM\Column(length: 255)]
+    #[Groups("read")]
+    private ?string $picture_url = null;
+
     public function __construct()
     {
         $this->gardenings = new ArrayCollection();
@@ -325,6 +329,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $plante->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPictureUrl(): ?string
+    {
+        return $this->picture_url;
+    }
+
+    public function setPictureUrl(string $picture_url): static
+    {
+        $this->picture_url = $picture_url;
 
         return $this;
     }

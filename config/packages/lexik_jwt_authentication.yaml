@@ -2,3 +2,5 @@ lexik_jwt_authentication:
     secret_key: '%env(resolve:JWT_SECRET_KEY)%'
     public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
     pass_phrase: '%env(JWT_PASSPHRASE)%'
+    token_ttl: 172800 # Set the access token expiration time to 2 days (2 * 24 * 60 * 60 seconds)
+    #refresh_token_ttl: 259200 # Set the refresh token expiration time to 3 days (3 * 24 * 60 * 60 seconds)
