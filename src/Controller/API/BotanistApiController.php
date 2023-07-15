@@ -28,7 +28,7 @@ class BotanistApiController extends AbstractController
     }
 
     #[Route('/', name: 'botaniste')]
-    public function botaniste(UserRepository $userRepository): JsonResponse
+    public function botaniste(BotanistRepository $userRepository): JsonResponse
     {
         return $this->json($userRepository->findAll(), 200, [], ['groups' => 'read']);
     }
