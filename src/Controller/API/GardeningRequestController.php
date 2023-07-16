@@ -62,9 +62,12 @@ class GardeningRequestController extends AbstractController
         }
 
         $gardeningRepository->save($gardeningRequest, true);
-        $json = $serializer->serialize($gardeningRequest, 'json');
+       // $json = $serializer->serialize($gardeningRequest, 'json');
+        return $this->json([
+            'message' => 'La requête de gardiennage a été ajoutée avec succès',
 
-        return new Response($json, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
+        ]);
+      //  return new Response($json, Response::HTTP_CREATED, ['Content-Type' => 'application/json']);
     }
 
     #[Route('/{id}', name: 'app_plante_delete', methods: ['DELETE'])]
