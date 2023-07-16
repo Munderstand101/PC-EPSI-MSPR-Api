@@ -57,11 +57,7 @@ class RegistrationController extends AbstractController
         $user->setAddress($payload['address']);
         $user->setZipcode($payload['zipcode']);
         $user->setCity($payload['city']);
-
-        $user->setLatitude($payload['latitude']);
-        $user->setLongitude($payload['longitude']);
-
-
+        $user->setPictureUrl($payload['picture_url']);
 
         // Validate the user entity
         $errors = $validator->validate($user);

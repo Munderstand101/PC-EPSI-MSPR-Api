@@ -55,11 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups("read")]
     private ?string $city = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups("read")]
     private ?float $longitude = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups("read")]
     private ?float $latitude = null;
 

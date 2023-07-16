@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\GardeningRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GardeningRepository::class)]
 #[ORM\Table(name:"cardening_request")]
@@ -16,24 +17,31 @@ class Gardening
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'gardenings')]
+    #[Groups("read")]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'gardenings')]
+    #[Groups("read")]
     private ?Plante $plant = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups("read")]
     private ?\DateTimeInterface $date_debut = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups("read")]
     private ?\DateTimeInterface $date_fin = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("read")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("read")]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("read")]
     private ?string $address = null;
 
     public function getId(): ?int
