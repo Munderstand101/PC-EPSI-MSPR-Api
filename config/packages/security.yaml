@@ -44,6 +44,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # Connection et creation de compte
+        - { path: ^/api/chat, roles: PUBLIC_ACCESS  }
+        - { path: ^/api/doc, roles: PUBLIC_ACCESS  }
         - { path: ^/api/login, roles: PUBLIC_ACCESS  }
         - { path: ^/api/register, roles: PUBLIC_ACCESS  }
         # Faut etre authentifier pour acceder au reste de api/
@@ -51,7 +53,8 @@ security:
         # Faut avoir le role admin pour acceder a l'app web admin
         - { path: ^/app/admin, roles: ROLE_ADMIN }
         # Faut avoir le botaniste admin pour acceder a l'app web botaniste
-        - { path: ^/app/botaniste, roles: ROLE_BOTANISTE }
+        - { path: ^/app/botanist, roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/app/botaniste, roles: ROLE_BOTANISTE }
 
 
 when@test:

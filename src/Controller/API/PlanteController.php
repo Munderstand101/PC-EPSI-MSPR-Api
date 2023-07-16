@@ -57,7 +57,7 @@ class PlanteController extends AbstractController
     }
 
     #[Route('/add', name: 'add', methods: ['POST'])]
-    public function addPlant(Request $request, PlanteRepository $planteRepository, UserRepository $userRepository): Response
+    public function addPlant(Request $request, ValidatorInterface $validator, PlanteRepository $planteRepository, UserRepository $userRepository): Response
     {
         // Récupérer les données de la requête
         $name = $request->request->get('name');
@@ -82,6 +82,17 @@ class PlanteController extends AbstractController
             $plant->setDescription($description);
             $plant->setPhoto($photoName);
             $plant->setUser($user);
+
+            $errors = $validator->validate($plant);
+            if (count($errors) > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = $error->getMessage();
+                }
+
+                $json = $serializer->serialize(['errors' => $errorMessages], 'json');
+                return new Response($json, Response::HTTP_BAD_REQUEST, ['Content-Type' => 'application/json']);
+            }
 
             // Enregistrer l'entité dans la base de données
             $planteRepository->save($plant, true);

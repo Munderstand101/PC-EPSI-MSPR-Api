@@ -55,11 +55,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups("read")]
     private ?string $city = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups("read")]
     private ?float $longitude = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups("read")]
     private ?float $latitude = null;
 
@@ -76,6 +76,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Plante::class)]
     private Collection $plantes;
+
+    #[ORM\Column(length: 255)]
+    #[Groups("read")]
+    private ?string $picture_url = null;
 
     public function __construct()
     {
@@ -325,6 +329,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $plante->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPictureUrl(): ?string
+    {
+        return $this->picture_url;
+    }
+
+    public function setPictureUrl(string $picture_url): static
+    {
+        $this->picture_url = $picture_url;
 
         return $this;
     }

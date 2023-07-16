@@ -47,6 +47,10 @@ class Botanist
     #[Groups("read")]
     private ?float $latitude = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups("read")]
+    private ?string $picture_url = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,6 +148,18 @@ class Botanist
     public function setLatitude(float $latitude): self
     {
         $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getPictureUrl(): ?string
+    {
+        return $this->picture_url;
+    }
+
+    public function setPictureUrl(string $picture_url): static
+    {
+        $this->picture_url = $picture_url;
 
         return $this;
     }
