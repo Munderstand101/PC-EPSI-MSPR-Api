@@ -81,10 +81,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups("read")]
     private ?string $picture_url = null;
 
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Message::class)]
+    private Collection $sentMessages;
+
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Message::class)]
+    private Collection $receivedMessages;
+
+    #[ORM\OneToMany(mappedBy: 'startedBy', targetEntity: Conversation::class)]
+    private Collection $receivedConv;
+
+    #[ORM\OneToMany(mappedBy: 'targetUser', targetEntity: Conversation::class)]
+    private Collection $conversations;
+
+
     public function __construct()
     {
         $this->gardenings = new ArrayCollection();
         $this->plantes = new ArrayCollection();
+        $this->sentMessages = new ArrayCollection();
+        $this->receivedMessages = new ArrayCollection();
+        $this->receivedConv = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -341,6 +359,126 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPictureUrl(string $picture_url): static
     {
         $this->picture_url = $picture_url;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getSentMessages(): Collection
+    {
+        return $this->sentMessages;
+    }
+
+    public function addSentMessage(Message $sentMessage): static
+    {
+        if (!$this->sentMessages->contains($sentMessage)) {
+            $this->sentMessages->add($sentMessage);
+            $sentMessage->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentMessage(Message $sentMessage): static
+    {
+        if ($this->sentMessages->removeElement($sentMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($sentMessage->getSender() === $this) {
+                $sentMessage->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getReceivedMessages(): Collection
+    {
+        return $this->receivedMessages;
+    }
+
+    public function addReceivedMessage(Message $receivedMessage): static
+    {
+        if (!$this->receivedMessages->contains($receivedMessage)) {
+            $this->receivedMessages->add($receivedMessage);
+            $receivedMessage->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedMessage(Message $receivedMessage): static
+    {
+        if ($this->receivedMessages->removeElement($receivedMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedMessage->getRecipient() === $this) {
+                $receivedMessage->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getReceivedConv(): Collection
+    {
+        return $this->receivedConv;
+    }
+
+    public function addReceivedConv(Conversation $receivedConv): static
+    {
+        if (!$this->receivedConv->contains($receivedConv)) {
+            $this->receivedConv->add($receivedConv);
+            $receivedConv->setStartedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedConv(Conversation $receivedConv): static
+    {
+        if ($this->receivedConv->removeElement($receivedConv)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedConv->getStartedBy() === $this) {
+                $receivedConv->setStartedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): static
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations->add($conversation);
+            $conversation->setTargetUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): static
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            // set the owning side to null (unless already changed)
+            if ($conversation->getTargetUser() === $this) {
+                $conversation->setTargetUser(null);
+            }
+        }
 
         return $this;
     }
