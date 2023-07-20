@@ -1,9 +1,13 @@
 nelmio_api_doc:
     documentation:
         info:
-            title: My App
+            title: Arosaje MSPR API REST/JWT
             description: This is an awesome app!
             version: 1.0.0
+
     areas: # to filter documented areas
-        path_patterns:
-            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+        default:
+            disable_default_routes: false
+
+            path_patterns:
+                - ^/api(?!/(doc|docs|index|\.well-known|contexts|botanist)/) # Ignore routes under /api except specific ones

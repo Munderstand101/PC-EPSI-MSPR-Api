@@ -8,6 +8,7 @@ use App\Form\PlanteType;
 use App\Repository\PlanteRepository;
 use App\Repository\UserRepository;
 use JMS\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use OpenApi\Attributes as OA;
 
-
+#[OA\Tag(name: 'Plant')]
+#[Security(name: 'Bearer')]
 #[Route('/api/plante', name: 'api_plante_')]
 class PlanteController extends AbstractController
 {
