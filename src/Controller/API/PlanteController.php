@@ -41,6 +41,7 @@ class PlanteController extends AbstractController
         $plante = new Plante();
         $plante->setName($payload['name']);
         $plante->setDescription($payload['description']);
+        $plante->setTimestampsOnCreate();
 
         $errors = $validator->validate($plante);
         if (count($errors) > 0) {
@@ -102,6 +103,9 @@ class PlanteController extends AbstractController
             $plant->setDescription($description);
             $plant->setPhoto($photoName);
             $plant->setUser($user);
+            $plant->setTimestampsOnCreate();
+
+
 
             $errors = $validator->validate($plant);
             if (count($errors) > 0) {

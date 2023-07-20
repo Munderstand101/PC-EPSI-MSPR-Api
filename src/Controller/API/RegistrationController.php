@@ -70,7 +70,7 @@ class RegistrationController extends AbstractController
         $user->setLatitude($payload['latitude']);
         $user->setLongitude($payload['longitude']);
 
-
+        $user->setTimestampsOnCreate();
 
         // Validate the user entity
         $errors = $validator->validate($user);
