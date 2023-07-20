@@ -73,8 +73,8 @@ class PlanteController extends AbstractController
         // Vérifier si une photo a été envoyée
         if ($photo) {
             if($fromScan){
-                $sourceFilePath = $this->getParameter('temp_photos_directory') + $photo
-                $destinationFilePath = $this->getParameter('photos_directory') + $photo
+                $sourceFilePath = $this->getParameter('temp_photos_directory') + $photo;
+                $destinationFilePath = $this->getParameter('photos_directory') + $photo;
                 $filesystem = new Filesystem();
                 try {
                     // Déplacez le fichier de la source vers la destination
