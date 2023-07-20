@@ -2,6 +2,7 @@
 
 namespace App\Controller\APP;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Botanist;
 use App\Form\Botanist1Type;
 use App\Repository\BotanistRepository;

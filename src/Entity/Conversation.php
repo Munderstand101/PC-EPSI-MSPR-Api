@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use App\Controller\API\ChatController;
+use App\Entity\Traits\TimestampsTrait;
 use App\Repository\ConversationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,8 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ConversationRepository::class)]
+
 class Conversation
 {
+    use TimestampsTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -18,7 +23,7 @@ class Conversation
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'receivedConv')]
-    #[Groups("read")]
+  //  #[Groups("read")]
     private ?User $startedBy = null;
 
     #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Message::class)]
