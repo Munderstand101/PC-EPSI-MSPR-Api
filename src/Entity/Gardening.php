@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GardeningRepository::class)]
-#[ORM\Table(name:"cardening_request")]
+#[ORM\Table(name:"gardening_request")]
 class Gardening
 {
     #[ORM\Id]
