@@ -2,52 +2,73 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\BotanistRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BotanistRepository::class)]
+//#[ApiResource(
+//    operations: [
+//        new Get(normalizationContext: ['groups' => 'conference:item']),
+//        new GetCollection(normalizationContext: ['groups' => 'conference:list'])
+//    ],
+//    order: ['year' => 'DESC', 'city' => 'ASC'],
+//    paginationEnabled: false,
+//)]
 class Botanist
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+//   #[Groups(['botanist:list', 'botanist:item'])]
+
     #[Groups("read")]
     private ?int $id = null;
 
 //    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-////    #[Groups("read")]
+////   #[Groups(['botanist:list', 'botanist:item'])]
 //    private ?User $user = null;
 
     #[ORM\Column(length: 255)]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?string $specialization = null;
 
     #[ORM\Column(length: 255)]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?string $zipcode = null;
 
     #[ORM\Column(length: 255)]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?string $city = null;
 
     #[ORM\Column]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?float $longitude = null;
 
     #[ORM\Column]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?float $latitude = null;
 
     #[ORM\Column(length: 255)]
+//   #[Groups(['botanist:list', 'botanist:item'])]
     #[Groups("read")]
     private ?string $picture_url = null;
 

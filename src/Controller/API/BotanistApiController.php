@@ -3,9 +3,11 @@
 namespace App\Controller\API;
 
 use App\Entity\Botanist;
+use App\Entity\User;
 use App\Form\BotanistType;
 use App\Repository\BotanistRepository;
 use App\Repository\UserRepository;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-
+use OpenApi\Attributes as OA;
 
 #[Route('/api/botanist', name: 'api_botanist_')]
 class BotanistApiController extends AbstractController
@@ -28,25 +30,11 @@ class BotanistApiController extends AbstractController
     }
 
     #[Route('/', name: 'botaniste')]
+
     public function botaniste(BotanistRepository $userRepository): JsonResponse
     {
         return $this->json($userRepository->findAll(), 200, [], ['groups' => 'read']);
     }
-
-   /* #[Route('/', name: 'api_botanist_index', methods: ['GET'])]
-    public function index(BotanistRepository $botanistRepository): Response
-    {
-        $botanists = $botanistRepository->findAll();
-
-        $jsonContent = $this->serializer->serialize($botanists, 'json', [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['createdAt', 'updatedAt'],
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            },
-        ]);
-
-        return new Response($jsonContent, Response::HTTP_OK, ['Content-Type' => 'application/json']);
-    }*/
 
     #[Route('/new', name: 'api_botanist_new', methods: ['POST'])]
     public function new(Request $request, BotanistRepository $botanistRepository): Response

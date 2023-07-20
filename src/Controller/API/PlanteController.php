@@ -57,23 +57,40 @@ class PlanteController extends AbstractController
     }
 
     #[Route('/add', name: 'add', methods: ['POST'])]
-    public function addPlant(Request $request, PlanteRepository $planteRepository, UserRepository $userRepository): Response
+    public function addPlant(Request $request, ValidatorInterface $validator, PlanteRepository $planteRepository, UserRepository $userRepository, bool $fromScan = false): Response
     {
         // Récupérer les données de la requête
         $name = $request->request->get('name');
         $description = $request->request->get('description');
-        $photo = $request->files->get('photo');
+        if($fromScan){
+            $photo = $request->request->get('photo');
+        } else {
+            $photo = $request->files->get('photo');
+        }
         $userId = $request->request->get('user_id');
         $user = $userRepository->findOneBy(["id"=>$userId]);
 
         // Vérifier si une photo a été envoyée
         if ($photo) {
-            // Gérer le téléchargement de la photo (par exemple, en la sauvegardant dans un dossier)
-            $photoName = $this->generateUniqueFileName().'.'.$photo->guessExtension();
-            $photo->move(
-                $this->getParameter('photos_directory'),
-                $photoName
-            );
+            if($fromScan){
+                $sourceFilePath = $this->getParameter('temp_photos_directory') + $photo;
+                $destinationFilePath = $this->getParameter('photos_directory') + $photo;
+                $filesystem = new Filesystem();
+                try {
+                    // Déplacez le fichier de la source vers la destination
+                    $filesystem->rename($sourceFilePath, $destinationFilePath);
+                    echo 'Le fichier a été déplacé avec succès !';
+                } catch (IOExceptionInterface $exception) {
+                    echo 'Une erreur est survenue lors du déplacement du fichier : ' . $exception->getMessage();
+                }
+            } else {
+                // Gérer le téléchargement de la photo (par exemple, en la sauvegardant dans un dossier)
+                $photoName = $this->generateUniqueFileName().'.'.$photo->guessExtension();
+                $photo->move(
+                    $this->getParameter('photos_directory'),
+                    $photoName
+                );
+            }
 
             // Enregistrer le nom de la photo dans la base de données
             // Vous devrez créer une entité "Plant" avec une propriété "photo" pour stocker le nom du fichier
@@ -82,6 +99,17 @@ class PlanteController extends AbstractController
             $plant->setDescription($description);
             $plant->setPhoto($photoName);
             $plant->setUser($user);
+
+            $errors = $validator->validate($plant);
+            if (count($errors) > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = $error->getMessage();
+                }
+
+                $json = $serializer->serialize(['errors' => $errorMessages], 'json');
+                return new Response($json, Response::HTTP_BAD_REQUEST, ['Content-Type' => 'application/json']);
+            }
 
             // Enregistrer l'entité dans la base de données
             $planteRepository->save($plant, true);
@@ -100,6 +128,28 @@ class PlanteController extends AbstractController
             ]);
         }
 
+        // Retourner une erreur si aucune photo n'a été envoyée
+        return $this->json(['error' => 'Aucune photo n\'a été envoyée.'], Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Route('/scan', name: 'scan', methods: ['POST'])]
+    public function scanPlant(Request $request, ValidatorInterface $validator): Response
+    {
+        $photo = $request->files->get('photo');
+        // Vérifier si une photo a été envoyée
+        if ($photo) {
+            $photoName = $this->generateUniqueFileName().'.'.$photo->guessExtension();
+            $photo->move(
+                $this->getParameter('temp_photos_directory'),
+                $photoName
+            );
+
+            // Retourner une réponse JSON avec les détails de la plante ajoutée
+            return $this->json([
+                'message' => 'La plante a été scannée avec succès',
+                'img' => $photoName,
+            ]);
+        }
         // Retourner une erreur si aucune photo n'a été envoyée
         return $this->json(['error' => 'Aucune photo n\'a été envoyée.'], Response::HTTP_BAD_REQUEST);
     }
