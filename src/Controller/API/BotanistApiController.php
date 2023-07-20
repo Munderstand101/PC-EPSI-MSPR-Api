@@ -36,6 +36,8 @@ class BotanistApiController extends AbstractController
         return $this->json($botanistes, 200, [], ['groups' => 'read']);
     }
 
+/*
+
     #[Route('/new', name: 'api_botanist_new', methods: ['POST'])]
     public function new(Request $request, BotanistRepository $botanistRepository): Response
     {
@@ -118,4 +120,5 @@ class BotanistApiController extends AbstractController
         }
         return $errors;
     }
+    */
 }

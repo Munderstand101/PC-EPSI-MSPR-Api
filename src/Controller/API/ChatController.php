@@ -11,12 +11,17 @@ use App\Repository\MessageRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use OpenApi\Attributes as OA;
 
+
+#[OA\Tag(name: 'Chat')]
+#[Security(name: 'Bearer')]
 #[Route('/api/chat', name: 'api_chat_')]
 class ChatController extends AbstractController
 {
@@ -73,7 +78,7 @@ class ChatController extends AbstractController
         $conversation = new Conversation();
         $conversation->setStartedBy($startedBy);
         $conversation->setTargetUser($targetUser);
-
+        $conversation->setTimestampsOnCreate();
         // Persist the conversation to the database
         $this->entityManager->persist($conversation);
         $this->entityManager->flush();
