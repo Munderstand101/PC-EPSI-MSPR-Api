@@ -32,7 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180)]
     #[Groups("read")]
     private $username;
- 
+
+
     #[ORM\Column]
    // #[Groups("read")]
     private array $roles = [];
@@ -93,6 +94,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'targetUser', targetEntity: Conversation::class)]
     private Collection $conversations;
+
+    #[Groups("read")]
+    private $fullName;
+
+    /**
+     * @return mixed
+     */
+    public function getFullName(): string
+    {
+        return $this->firstName . " " . $this->lastName;
+    }
+
 
 
     public function __construct()
