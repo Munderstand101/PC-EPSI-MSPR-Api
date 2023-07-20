@@ -30,10 +30,10 @@ class BotanistApiController extends AbstractController
     }
 
     #[Route('/', name: 'botaniste')]
-
-    public function botaniste(BotanistRepository $userRepository): JsonResponse
+    public function botaniste(UserRepository $userRepository): JsonResponse
     {
-        return $this->json($userRepository->findAll(), 200, [], ['groups' => 'read']);
+        $botanistes = $userRepository->findByRole('BOTANISTE');
+        return $this->json($botanistes, 200, [], ['groups' => 'read']);
     }
 
     #[Route('/new', name: 'api_botanist_new', methods: ['POST'])]
