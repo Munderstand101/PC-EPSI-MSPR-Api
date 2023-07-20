@@ -78,7 +78,7 @@ class ChatController extends AbstractController
         $conversation = new Conversation();
         $conversation->setStartedBy($startedBy);
         $conversation->setTargetUser($targetUser);
-
+        $conversation->setTimestampsOnCreate();
         // Persist the conversation to the database
         $this->entityManager->persist($conversation);
         $this->entityManager->flush();
